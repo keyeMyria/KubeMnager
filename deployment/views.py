@@ -4,6 +4,7 @@ from kubernetes import client, config
 from kubernetes.client.rest import ApiException
 from KubeManager import settings
 from coredb.models import kubernetes_db
+from deployment.models import Deployment
 import re
 # Create your views here.
 
@@ -35,3 +36,28 @@ def load_deployment_to_mongo(request):
         return HttpResponse(r"Deployment数据被载入CoreDB中！")
     except ApiException as e:
         print("Exception when calling AppsV1Api->list_deployment_for_all_namespaces: %s\n" % e)
+
+
+def init_deployment_to_sql(request):
+    try:
+        Deployment.objects.all().delete()
+        api_response = instance_appv1.list_deployment_for_all_namespaces(watch=False)
+        for i in api_response.items:
+            containers = i.spec.template.spec.containers
+            svc_version = 'NULL'
+            for j in containers:
+                if j.name == 'java':
+                    image = j.image
+                    svc_version = re.match(pattern_version, image).group(1)
+            Deployment.objects.create(name=i.metadata.name,
+                                      namespace=i.metadata.namespace,
+                                      available=i.status.available_replicas,
+                                      desired=i.status.replicas,
+                                      unavailable=i.status.unavailable_replicas,
+                                      updated=i.status.updated_replicas,
+                                      svc_version=svc_version
+                                      )
+        return HttpResponse(r"Deployment数据被载入sqlite中！")
+    except ApiException as e:
+        print("Exception when calling AppsV1Api->list_deployment_for_all_namespaces: %s\n" % e)
+

@@ -40,10 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api',
-    'deployment',
-    'coredb',
-    'cmdb',
+    'api.apps.ApiConfig',
+    'deployment.apps.DeploymentConfig',
+    'coredb.apps.CoredbConfig',
+    'cmdb.apps.CmdbConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

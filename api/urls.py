@@ -5,5 +5,6 @@ from .views import *
 urlpatterns = [
     path('', index, name="index"),
     path('v1/', index, name="index"),
-    path('v1/deployments/', show_all_namespace_dep, name="show_all_namespace_dep")
+    path('v1/deployments/', DeploymentList.as_view()),
+    path('v1/deployments/<str:name>/', DeploymentDetail.as_view()),
 ]
