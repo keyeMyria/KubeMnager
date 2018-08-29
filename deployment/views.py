@@ -9,7 +9,7 @@ import re
 # Create your views here.
 
 pattern_version = re.compile('nexus\.sss\.com:18443/.*:(.*)$')
-config.load_kube_config(settings.KUBERNETES_CONFIGFILE['test'])
+config.load_kube_config(settings.KUBERNETES_CONFIGFILE['release'])
 instance_corev1 = client.CoreV1Api()
 instance_appv1 = client.AppsV1Api()
 
