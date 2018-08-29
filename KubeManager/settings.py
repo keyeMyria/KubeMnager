@@ -18,6 +18,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 KUBERNETES_CONFIGFILE = {
     'test': '/home/liuzhi/.kube/config',
+    'pre': '/root/.kube/config',
+    'release': '/root/.kube/config',
 }
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
